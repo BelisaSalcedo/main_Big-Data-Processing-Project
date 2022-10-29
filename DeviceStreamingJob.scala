@@ -64,8 +64,8 @@ object DeviceStreamingJob extends StreamingJob {
   override def SumDevicestByAntenna(dataFrame: DataFrame): DataFrame = {
     dataFrame
       .select(cols = $"timestamp", $"antenna_id", $"bytes")
-      .withWatermark(eventTime = "timestamp", delayThreshold = "10 seconds") //1 minute
-      .groupBy(cols = $"antenna_id", window(timeColumn = $"timestamp", windowDuration = "30 seconds").as("window")) //5 minutes
+      .withWatermark(eventTime = "timestamp", delayThreshold = "60 seconds") //1 minute
+      .groupBy(cols = $"antenna_id", window(timeColumn = $"timestamp", windowDuration = "5 minutes").as("window")) //5 minutes
       .agg(
         sum($"bytes").as("value")
       )
